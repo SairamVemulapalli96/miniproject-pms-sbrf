@@ -1,0 +1,117 @@
+create database propertymanagementsystem;
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE OWNERS(
+    OID INT AUTO_INCREMENT PRIMARY KEY,
+    NAME VARCHAR(20) NOT NULL,
+    AGE INT NOT NULL,
+    GENDER CHAR(1) NOT NULL,
+    EMAIL VARCHAR(40) NOT NULL,
+    PASSWORD VARCHAR(20) NOT NULL,
+    PHONENO VARCHAR(10) NOT NULL,
+    ADDRESS VARCHAR(30) NOT NULL
+    );
+
+INSERT INTO OWNERS(NAME, AGE, GENDER, EMAIL, PASSWORD, PHONENO, ADDRESS) VALUES ("Raghavan", 41, "M", "raghavan.muthu@gmail.com", "raghavan@muthu", "8095261616", "Whitefield, Bangalore");
+INSERT INTO OWNERS(NAME, AGE, GENDER, EMAIL, PASSWORD, PHONENO, ADDRESS) VALUES ("Kavana", 25, "F", "kavana.mu@gmail.com", "kavana@mu", "9663137719", "Mg Road, Bangalore");
+INSERT INTO OWNERS(NAME, AGE, GENDER, EMAIL, PASSWORD, PHONENO, ADDRESS) VALUES ("Sravanthi", 25, "F", "sravanthi.alahari@gmail.com", "sravanthi@alahari", "9182982574", "Marathahalli, Bangalore");
+INSERT INTO OWNERS(NAME, AGE, GENDER, EMAIL, PASSWORD, PHONENO, ADDRESS) VALUES ("Balaji", 41, "M", "balaji.jayavelu@gmail.com", "balaji@jayavelu", "9876543218", "Indira nagar, Bangalore");
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+CREATE TABLE TENANTS(
+    TID INT AUTO_INCREMENT PRIMARY KEY,
+    NAME VARCHAR(20) NOT NULL,
+    AGE INT NOT NULL,
+    GENDER CHAR(1) NOT NULL,
+    EMAIL VARCHAR(40) NOT NULL,
+    PASSWORD VARCHAR(20) NOT NULL,
+    PHONENO VARCHAR(10) NOT NULL,
+    ADDRESS VARCHAR(30) NOT NULL,
+    OID int NOT NULL,
+    FOREIGN KEY (OID) REFERENCES OWNERS(OID)   
+    );
+
+
+INSERT INTO TENANTS(NAME, AGE, GENDER, EMAIL, PASSWORD, PHONENO, ADDRESS, OID) VALUES ("Rama", 46, "M", "vemulapalli.rama@gmail.com", "vemulapalli@rama", "9676222096", "Mg Road, bangalore", 2);
+INSERT INTO TENANTS(NAME, AGE, GENDER, EMAIL, PASSWORD, PHONENO, ADDRESS, OID) VALUES ("Thejaswini", 25, "F", "thejaswini.rn@gmail.com", "thejaswini@rn", "9980251152", "Jaya Nagar, Bangalore", 1);
+INSERT INTO TENANTS(NAME, AGE, GENDER, EMAIL, PASSWORD, PHONENO, ADDRESS,OID) VALUES ("Karthik", 25, "M", "karthik.hk@gmail.com", "karthik@hk","6362288404", "Koramangala, Bangalore", 3);
+INSERT INTO TENANTS(NAME, AGE, GENDER, EMAIL, PASSWORD, PHONENO, ADDRESS,OID) VALUES ("Arun", 25, "M", "arun.prasad@gmail.com", "arun@prasad", "7288822559", "Rajaji Nagara, Bangalore", 4);
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE PROPERTIES(
+    PID INT AUTO_INCREMENT PRIMARY KEY,
+    PROPERTY_NAME VARCHAR(40) NOT NULL,
+    DOOR_NO VARCHAR(15) NOT NULL,
+    STREET_NAME VARCHAR(30) NOT NULL,
+    CITY VARCHAR(20) NOT NULL,
+    PINCODE VARCHAR(10) NOT NULL,
+    STATE VARCHAR(20) NOT NULL,
+    COUNTRY VARCHAR(30) NOT NULL,
+    AREA VARCHAR(30) NOT NULL,
+    FACING VARCHAR(15),
+    PURCHASE_VALUE VARCHAR(20) NOT NULL,
+    FLAT_NO VARCHAR(20) NOT NULL,
+    ADDRESS VARCHAR(100) NOT NULL,
+    PROPERTY_TAX VARCHAR(20) NOT NULL,
+    WATER_TAX VARCHAR(20) NOT NULL,
+    ELECTRICITY_CHARGES VARCHAR(20) NOT NULL,
+    OID int NOT NULL,
+    OWNER_NAME VARCHAR(30) NOT NULL,
+    TID int,
+    TENANT_NAME VARCHAR(30),
+    FOREIGN KEY (OID) REFERENCES OWNERS(OID),
+    FOREIGN KEY (TID) REFERENCES TENANTS(TID)  
+    );
+
+INSERT INTO PROPERTIES(PROPERTY_NAME, DOOR_NO, STREET_NAME, CITY, PINCODE, STATE, COUNTRY, AREA, FACING, PURCHASE_VALUE, FLAT_NO, ADDRESS, PROPERTY_TAX, WATER_TAX, ELECTRICITY_CHARGES, OID, OWNER_NAME, TID, TENANT_NAME) VALUES ("SUNSHINE TOWERS", "5-26", "MG ROAD", "BANGALORE", "560001", "KARNATAKA", "INDIA", "1000 SQFT", "NORTH FACING", "7500000", "FLAT NO 201", "NEAR CAFE COFFEE DAY", "AS PER BBMP NORMS", "AS PER BWSSB NORMS", "AS PER BESCOM NORMS", 2, "KAVANA", 1, "RAMA" );
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+CREATE TABLE AGREEMENTS(
+AID INT AUTO_INCREMENT PRIMARY KEY,
+OID int NOT NULL,
+OWNER_NAME VARCHAR(30) NOT NULL,
+PID int NOT NULL,
+PROPERTY_NAME VARCHAR(30) NOT NULL,
+TID int,
+TENANT_NAME VARCHAR(30),
+TENANCY_START_DATE VARCHAR(20),
+TENANCY_END_DATE VARCHAR(20),
+RENT int NOT NULL,
+MAINTENANCE int NOT NULL,
+TERMS VARCHAR(300),
+FOREIGN KEY (OID) REFERENCES OWNERS(OID),
+FOREIGN KEY (TID) REFERENCES TENANTS(TID),
+FOREIGN KEY (PID) REFERENCES PROPERTIES(PID)
+);
+
+INSERT INTO AGREEMENTS(OID, OWNER_NAME, PID, PROPERTY_NAME, TID, TENANT_NAME, TENANCY_START_DATE, TENANCY_END_DATE, RENT, MAINTENANCE, TERMS) VALUES (2, "Kavana", 1, "Sunshine Towers", 1, "Rama", "23-Nov-2022", "23-Nov-2025", 25000, 4000, "Please pay the rent before 10th every month, and clear the electricity bills and update it in the app");
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE TENANTSUGGESTIONS(
+TSID INT AUTO_INCREMENT PRIMARY KEY,
+EMAIL VARCHAR(40) NOT NULL,
+TENANT_NAME VARCHAR(30) NOT NULL,
+SUGGESTIONS VARCHAR(300) NOT NULL
+);
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE OWNERSUGGESTIONS(
+OSID INT AUTO_INCREMENT PRIMARY KEY,
+EMAIL VARCHAR(40) NOT NULL,
+OWNER_NAME VARCHAR(30) NOT NULL,
+SUGGESTIONS VARCHAR(300) NOT NULL
+);
+
